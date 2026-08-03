@@ -1,0 +1,137 @@
+.container{
+    margin: 20px;
+}
+
+body{
+    font-size: 18px;
+    font-family: Roboto;
+    background: linear-gradient(180deg, #0b0f1a, #111827);
+    background-image: url("../img/space.png");
+    background-size: cover;
+    color: #e5e7eb;
+}
+
+header{
+    margin-top: 30px;
+    background: #FFFFFF0D;
+    backdrop-filter: blur(6px);
+    border: 1px solid #FFFFFF1A;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: Orbitron;
+}
+
+h1{
+   text-align: center;
+}
+
+span{
+    color: #60a5fa;
+    font-family: Playfair Display;
+}
+
+.spanM{
+    color: #a78bfa;
+}
+
+p{
+    text-align: center;
+    color: #cbd5e1;
+}
+
+.caixa{
+    display: flex;
+}
+
+.criador{
+    background: #FFFFFF0D;
+    border: 1px solid #FFFFFF1A;
+    backdrop-filter: blur(6px);
+    margin-left: auto;
+    width: 600px;
+    border-radius: 20px;
+    padding: 20px;
+    height: fit-content;
+}
+
+main{
+    background: #FFFFFF0D;
+    border: 1px solid #FFFFFF1A;
+    backdrop-filter: blur(6px);
+    padding: 20px;
+    border-radius: 20px;
+    width: 600px;
+}
+
+.criador h3, main h3{
+    background: #60A5FA26;
+    border: 1px solid #60A5FA4D;
+    color: #60a5fa;
+    width: fit-content;
+    padding: 15px 20px;
+    border-radius: 20px;
+    justify-self: center;
+}
+
+.caixaMajora{
+    margin-top: 20px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.majora{
+    height: 350px;
+    width: auto;
+    margin-top: 20px;
+    filter: drop-shadow(0 10px 20px #00000099);
+}
+
+.info{
+    margin-top: 40px;
+    height: 200px;
+    width: auto;
+}
+
+footer{
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    background: #FFFFFF0D;
+    border-radius: 20px;
+    padding: 10px;   
+    width: 1000px;
+    text-align: center;
+    color: #9ca3af;
+    border: 1px solid #FFFFFF1A;
+    font-family: Roboto;
+    backdrop-filter: blur(6px);
+}
+
+.voltar{
+    text-decoration: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #FFFFFF14;
+    color: #e5e7eb;
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: 1px solid #FFFFFF26;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 25px #00000080;
+    display: block;
+    font-weight: 500;
+    transition: 0.25s;
+}
+
+.voltar:hover{
+    background: #60A5FA40;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px #000000B3;
+}

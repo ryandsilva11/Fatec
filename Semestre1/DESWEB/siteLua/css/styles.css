@@ -1,0 +1,130 @@
+body{
+    background: linear-gradient(180deg, #0b0f1a, #111827);
+    background-image: url("../img/space.png");
+    background-size: cover;
+    font-family: Roboto;
+    font-size: 18px;
+    color: #e5e7eb;
+    margin: 30px;
+}
+
+.container{
+    margin: 20px;
+}
+    
+header{
+    display: flex;
+    justify-content: center;
+    background-color: #FFFFFF0D;
+    border: 1px solid #FFFFFF1A;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: Orbitron;
+    backdrop-filter: blur(6px);
+}
+
+main{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    backdrop-filter: blur(6px);
+    align-items: center;
+}
+
+p{
+    margin: 10px;
+    background: #FFFFFF0D;
+    border: 1px solid #FFFFFF1A;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: larger;
+    width: 700px;
+}
+
+span{
+    color: #60a5fa;
+    font-family: Playfair Display;
+}
+
+.spanM{
+    color: #a78bfa;
+}
+
+nav{
+    background: #FFFFFF0D;
+    backdrop-filter: blur(6px);
+    border-radius: 20px;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #FFFFFF1A;
+    font-family: MontSerrat;
+}
+
+nav h3{
+    text-align: center;
+    margin: 5px;
+}
+
+nav ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: #cbd5e1;
+    font-weight: 500;
+    transition: 0.3s;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+nav ul li a:hover{
+    color: #60a5fa;
+}
+
+footer{
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    background: #FFFFFF0D;
+    border-radius: 20px;
+    padding: 10px;   
+    width: 1000px;
+    text-align: center;
+    color: #9ca3af;
+    border: 1px solid #FFFFFF1A;
+    font-family: Roboto;
+    backdrop-filter: blur(6px);
+}
+
+.listas{
+    display: flex;
+    gap: 30px;
+}
+
+.majora{
+    height: 350px;
+    width: auto;
+    margin-top: 20px;
+}
+
+.mascote{
+    height: auto;
+    width: 1200px;
+}
+
+.caixaMajora{
+    margin-top: 20px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
