@@ -1,0 +1,33 @@
+CREATE DATABASE hospital;
+
+CREATE TABLE paciente(
+    cpf VARCHAR(11) PRIMARY KEY,
+    nome VARCHAR(50),
+    endereco VARCHAR(50),
+    telefone VARCHAR(11),
+    data_nasc DATE,
+    sexo CHAR(1)
+);
+
+CREATE TABLE espec(
+    cod INT PRIMARY KEY,
+    nome CHAR(50)
+);
+
+CREATE TABLE medico(
+    crm VARCHAR(13) PRIMARY KEY,
+    nome VARCHAR(50),
+    espec INT,
+    salario INT,
+    FOREIGN KEY (espec) REFERENCES espec(cod)
+);
+
+CREATE TABLE consulta(
+    id_consulta INT PRIMARY KEY,
+    valor INT,
+    horario TIME,
+    medico VARCHAR(13),
+    paciente VARCHAR(11),
+    FOREIGN KEY (medico) REFERENCES medico(crm),
+    FOREIGN KEY (paciente) REFERENCES paciente(cpf)
+);
