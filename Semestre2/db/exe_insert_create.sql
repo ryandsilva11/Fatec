@@ -19,7 +19,7 @@ CREATE TABLE compra(
 );
 
 CREATE TABLE boleto_cartao(
-    codigo_cliente int PRIMARY KEY
+    codigo_cliente int PRIMARY KEY,
     valor int,
 
     FOREIGN KEY (codigo_cliente) REFERENCES cliente(codigo_cliente)
@@ -27,9 +27,9 @@ CREATE TABLE boleto_cartao(
 
 CREATE TABLE funcionario(
     codigo_funcionario int PRIMARY KEY,
-    nome_funcionario varchar(50)
+    nome_funcionario varchar(50),
     horario_entrada time,
-    horario_saida time,
+    horario_saida time
 );
 
 CREATE TABLE escala(
@@ -46,7 +46,7 @@ INSERT INTO cliente VALUES
 
 INSERT INTO produto VALUES 
     (1, 'Diabo verde'),
-    (2, 'Esfregão')
+    (2, 'Esfregão');
 
 INSERT INTO compra VALUES 
     (1 ,'2025-01-01',1,1),
