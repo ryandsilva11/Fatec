@@ -65,3 +65,12 @@ INSERT INTO boleto_cartao VALUES
 INSERT INTO escala VALUES
     (1, '13:40:00', '22:00:00'),
     (2, '13:30:00', '21:50:00');
+
+--Aula 28/05:
+SELECT * FROM funcionario;
+
+SELECT nome_funcionario FROM funcionario WHERE codigo_funcionario = 1;
+
+UPDATE produto set nome_produto = 'Buraco Negro' WHERE codigo_produto = 2;
+
+DELETE FROM boleto_cartao WHERE codigo_cliente = 2;
