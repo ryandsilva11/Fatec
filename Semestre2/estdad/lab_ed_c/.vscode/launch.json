@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/ryand/Desktop/Fatec/Semestre2/estdad/lab_ed_c/1Aula_c",
-      "program": "c:/Users/ryand/Desktop/Fatec/Semestre2/estdad/lab_ed_c/1Aula_c/build/Debug/outDebug",
+      "cwd": "c:/Users/ryand/Desktop/Fatec/Semestre2/estdad/lab_ed_c/2Aula_c/lista01",
+      "program": "c:/Users/ryand/Desktop/Fatec/Semestre2/estdad/lab_ed_c/2Aula_c/lista01/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
