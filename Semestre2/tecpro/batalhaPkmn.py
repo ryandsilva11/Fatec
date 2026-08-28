@@ -32,7 +32,7 @@ def criar_opcoes_pokemon():
     # 1. Opções do Jogador (Cloyster, Onix, Pidgeot)
     opcoes_jogador = {
         "1": PokemonAgua("Cloyster", 100, [
-            Ataque("Ray de Gelo", 35, "Gelo"),
+            Ataque("Raio de Gelo", 35, "Gelo"),
             Ataque("Jato d'Água", 25, "Água"),
             Ataque("Quebra-Concha", 20, "Normal"),
             Ataque("Espinho", 15, "Normal")
