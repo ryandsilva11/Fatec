@@ -10,11 +10,10 @@
 ## Cenário Escolhido: Mini Sistema de Batalha Pokémon (Jogador vs. CPU)
 
 ### **Descrição Geral do Cenário**
-O sistema gerencia uma batalha Pokémon por turnos entre o Jogador e a CPU:
-- **Seleção de Pokémon:** O jogador escolhe 1 entre 3 opções de Pokémon disponíveis: **Cloyster** (Tipo Água), **Onix** (Tipo Pedra) ou **Pidgeot** (Tipo Voador). A CPU seleciona aleatoriamente 1 entre outras 3 opções: **Wailmer** (Tipo Água), **Rayquaza** (Tipo Dragão) ou **Linoone** (Tipo Normal).
-- **Ações de Turno:** Em cada turno, o treinador pode escolher entre **Atacar** (selecionando 1 de 4 golpes disponíveis) ou **Usar Item** do inventário (composto por 5 Poções de +20 HP e 5 Curas de Status).
-- **Lógica de Combate da CPU:** A CPU executa sua jogada através de uma lógica de tomada de decisão inteligente (verificando seu HP percentual para usar poção apenas quando necessário e checando alteração de status antes de usar item de cura, evitando desperdício).
-- **Fim de Batalha:** A partida encerra quando o HP de um dos Pokémon atinge 0.
+O sistema gerencia uma batalha Pokémon interativa por turnos entre o Jogador e a CPU:
+- **Seleção de Pokémon:** O jogador batalha utilizando **Squirtle** (Tipo Água) contra o Pokémon da CPU, **Charmander** (Tipo Fogo).
+- **Ações de Turno:** Em cada turno, os Pokémons utilizam seus ataques para causar dano, ou utilizam itens como a **Poção de Vida** para recuperar pontos de vida. A batalha avança passo a passo conforme o usuário pressiona a tecla `Enter`.
+- **Fim de Batalha:** A partida encerra automaticamente quando o HP de um dos Pokémon atinge 0, declarando o vencedor.
 
 ---
 
@@ -22,82 +21,141 @@ O sistema gerencia uma batalha Pokémon por turnos entre o Jogador e a CPU:
 
 ### **1. Quais seriam as Classes deste sistema?**
 
-* **`Pokemon` (Classe Base):** Define a estrutura e o comportamento genérico de qualquer Pokémon (`nome`, `tipo`, `hp_maximo`, `hp`, `status`, `ataques`, `receber_dano()`, `restaurar_hp()`, `atacar()`).
-* **Subclasses Elementais (`PokemonAgua`, `PokemonPedra`, `PokemonVoador`, `PokemonDragao`, `PokemonNormal`):** Classes especializadas que herdam da classe `Pokemon` representando os tipos elementais específicos dos Pokémon.
-* **`Item` (Classe Abstrata Base):** Define a estrutura genérica de qualquer item de batalha (`nome`, `quantidade`, `aplicar_efeito()`).
-* **`PocaoHP` e `CuraStatus` (Classes Especializadas de Item):** Subclasses que herdam de `Item` e implementam os efeitos concretos de recuperação de vida e remoção de alterações de status.
+As classes representam os "moldes" ou "plantas" das entidades do sistema:
+
+* **`Pokemon` (Classe Base):** Define a estrutura e os comportamentos genéricos de qualquer Pokémon (`nome`, `tipo`, `_hp_maximo`, `_hp`, `ataque`, `receber_dano()`, `curar_hp()`, `atacar()`).
+* **`PokemonAgua` e `PokemonFogo` (Subclasses Elementais):** Classes especializadas que herdam da classe `Pokemon` e definem automaticamente o tipo elemental correspondente.
+* **`Item` (Classe Abstrata Base):** Define o contrato e a estrutura genérica de qualquer item (`nome`, `aplicar_efeito()`).
+* **`Pocao` (Subclasse de Item):** Subclasse especializada que herda de `Item` e implementa a ação concreta de recuperação de vida (HP).
 * **`Ataque`:** Representa a estrutura de um golpe (`nome`, `poder`, `tipo`).
-* **`GerenciadorBatalha`:** Classe responsável por controlar o fluxo de turnos, os inventários dos treinadores e a lógica de decisão da CPU.
+
+#### **Exemplo de Código (Classes):**
+```python
+# Classe Base (Pokemon) em pokemon.py
+class Pokemon:
+    def __init__(self, nome: str, tipo: str, hp_maximo: int, ataque: Ataque):
+        self.nome = nome
+        self.tipo = tipo
+        self.ataque = ataque
+        self._hp_maximo = hp_maximo
+        self._hp = hp_maximo
+
+# Subclasse (PokemonAgua) em pokemon_agua.py
+class PokemonAgua(Pokemon):
+    def __init__(self, nome: str, hp_maximo: int, ataque: Ataque):
+        super().__init__(nome, "Água", hp_maximo, ataque)
+```
 
 ---
 
 ### **2. Identifique os Objetos citados no texto do cenário.**
 
-* **Opções de Objetos do Jogador (Instâncias de Pokémon):**
-  * `cloyster_jogador` (Instância de `PokemonAgua`)
-  * `onix_jogador` (Instância de `PokemonPedra`)
-  * `pidgeot_jogador` (Instância de `PokemonVoador`)
-* **Opções de Objetos da CPU (Instâncias de Pokémon):**
-  * `wailmer_cpu` (Instância de `PokemonAgua`)
-  * `rayquaza_cpu` (Instância de `PokemonDragao`)
-  * `linoone_cpu` (Instância de `PokemonNormal`)
-* **Objetos de Itens (Instâncias de Item):**
-  * `pocao_vida` (Instância de `PocaoHP`, recupera +20 HP)
-  * `cura_status` (Instância de `CuraStatus`, cura alterações de status)
-* **Objetos de Ataque (Instâncias de Ataque):**
-  * ex: `ray_de_gelo`, `tumba_de_pedra`, `vento_ventania`, `ascensao_do_dragao` (Instâncias de `Ataque`).
+Os objetos são as instâncias concretas criadas a partir das classes durante a execução do programa:
+
+* **Objetos de Pokémon:**
+  * `squirtle`: Instância concreta da classe `PokemonAgua` (HP: 100).
+  * `charmander`: Instância concreta da classe `PokemonFogo` (HP: 80).
+* **Objeto de Item:**
+  * `pocao`: Instância concreta da classe `Pocao` (Recupera +30 HP).
+* **Objetos de Ataque:**
+  * `Jato d'Água`: Instância da classe `Ataque` (Poder: 40, Tipo: Água).
+  * `Lança-Chamas`: Instância da classe `Ataque` (Poder: 25, Tipo: Fogo).
+
+#### **Exemplo de Código (Instanciação de Objetos em `batalhaPkmn.py`):**
+```python
+# Criação dos objetos reais para a batalha
+squirtle = PokemonAgua("Squirtle", 100, Ataque("Jato d'Água", 40, "Água"))
+charmander = PokemonFogo("Charmander", 80, Ataque("Lança-Chamas", 25, "Fogo"))
+pocao = Pocao(cura=30)
+```
 
 ---
 
 ### **3. Onde está ocorrendo a Herança?**
 
-A Herança ocorre em duas hierarquias distintas no sistema:
+A Herança é o mecanismo onde uma classe filha herda atributos e métodos de uma classe pai. No sistema ela ocorre em duas hierarquias:
 
-1. **Hierarquia de Pokémon:**
-   * `PokemonAgua`, `PokemonPedra`, `PokemonVoador`, `PokemonDragao` e `PokemonNormal` **herdam da classe pai `Pokemon`**.
-   * Elas reaproveitam todos os atributos (`_hp`, `_status`, etc.) e métodos (`receber_dano()`, `atacar()`) da classe pai, definindo automaticamente o tipo elemental correspondente.
+1. **Hierarquia de Pokémon:** `PokemonAgua` e `PokemonFogo` herdam da classe pai `Pokemon`. Elas reutilizam o construtor e todos os métodos de combate da classe pai (`receber_dano`, `curar_hp`, `atacar`), repassando apenas o tipo específico.
+2. **Hierarquia de Itens:** A classe `Pocao` herda da classe pai abstrata `Item`, reaproveitando o atributo `nome` e implementando a sua própria regra de efeito.
 
-2. **Hierarquia de Itens:**
-   * `PocaoHP` e `CuraStatus` **herdam da classe abstrata pai `Item`**.
-   * Elas reaproveitam a estrutura base de nome e quantidade (`_nome`, `_quantidade`), especializando a ação através do método de efeito.
+#### **Exemplo de Código (Herança com `super()`):**
+```python
+# Herança na classe PokemonFogo (pokemon_fogo.py)
+class PokemonFogo(Pokemon):
+    def __init__(self, nome: str, hp_maximo: int, ataque: Ataque):
+        super().__init__(nome, "Fogo", hp_maximo, ataque) # Chama o construtor pai
+
+# Herança na classe Pocao (pocao.py)
+class Pocao(Item):
+    def __init__(self, cura: int = 20):
+        super().__init__("Poção de Vida") # Chama o construtor da classe base Item
+        self.cura = cura
+```
 
 ---
 
 ### **4. Onde está ocorrendo o Polimorfismo?**
 
-O Polimorfismo manifesta-se no método **`aplicar_efeito(pokemon)`** definido na classe abstrata `Item`:
+O Polimorfismo ocorre quando um mesmo método pode apresentar comportamentos diferentes dependendo do objeto que o executa:
 
-* Quando a ação `item.aplicar_efeito(pokemon)` é chamada para um objeto do tipo **`PocaoHP`**, a implementação recupera +20 pontos de HP do Pokémon (respeitando a trava do HP máximo).
-* Quando a mesma ação `item.aplicar_efeito(pokemon)` é chamada para um objeto do tipo **`CuraStatus`**, a implementação limpa a alteração de status do Pokémon, restaurando-o para `"Normal"`.
+* A classe abstrata `Item` declara a assinatura do método abstrato `@abstractmethod def aplicar_efeito(self, pokemon: Pokemon)`.
+* A subclasse `Pocao` sobrescreve este método implementando o efeito específico de recuperar os pontos de vida do Pokémon. Quando o jogo executa `pocao.aplicar_efeito(charmander)`, o comportamento disparado é a lógica de cura da `Pocao`.
 
-> *Mesmo método com a mesma assinatura (`aplicar_efeito`), gerando comportamentos totalmente diferentes dependendo do tipo do objeto executado.*
+#### **Exemplo de Código (Polimorfismo):**
+```python
+# Contrato Abstrato em item.py
+class Item(ABC):
+    @abstractmethod
+    def aplicar_efeito(self, pokemon: Pokemon) -> str:
+        pass
 
----
-
-### **5. Como o Encapsulamento foi aplicado neste cenário?**
-
-O Encapsulamento foi aplicado através da proteção rigorosa dos dados internos dos Pokémon e dos Itens:
-
-1. **Proteção de Atributos:**
-   * Os atributos críticos `_hp`, `_hp_maximo` e `_status` são marcados como protegidos (`_`).
-   * A leitura externa dos dados é feita através de propriedades/getters seguros (`@property def hp`, `@property def status`).
-
-2. **Trava de Regras de Negócio em Métodos Validadores:**
-   * **`receber_dano(quantidade)`:** Utiliza a lógica `dano_real = min(self._hp, quantidade)`, impedindo que o HP de um Pokémon fique negativo (menor que 0).
-   * **`restaurar_hp(quantidade)`:** Garante que o HP recuperado nunca ultrapasse o valor definido em `_hp_maximo`.
-   * Dessa forma, nenhuma classe externa consegue "forçar" um valor inválido de vida ou alterar o status sem passar pelas validações internas do próprio objeto.
+# Implementação Polimórfica em pocao.py
+class Pocao(Item):
+    def aplicar_efeito(self, pokemon: Pokemon) -> str:
+        recuperado = pokemon.curar_hp(self.cura)
+        return f"[ITEM] {self.nome} usada em {pokemon.nome}! Recuperou {recuperado} HP."
+```
 
 ---
 
-## Parte 2: Boas Práticas de Programação (Implementação em Código)
+### **5. Como o Encapsulamento foi applied neste cenário?**
 
-A solução foi estruturada de forma limpa e modularizada na linguagem **Python**, separando as responsabilidades em arquivos individuais:
+O Encapsulamento consiste em proteger os dados sensíveis dos objetos contra alterações diretas e indevidas, controlando o acesso através de métodos validadores:
 
-* [`item.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/item.py) — Classe abstrata base `Item`
-* [`pocao_hp.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pocao_hp.py) — Subclasse `PocaoHP` (Polimorfismo)
-* [`cura_status.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/cura_status.py) — Subclasse `CuraStatus` (Polimorfismo)
-* [`ataque.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/ataque.py) — Classe `Ataque`
-* [`pokemon.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon.py) — Classe base `Pokemon` (Encapsulamento de HP/status)
-* [`pokemon_agua.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon_agua.py), [`pokemon_pedra.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon_pedra.py), [`pokemon_voador.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon_voador.py), [`pokemon_dragao.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon_dragao.py), [`pokemon_normal.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon_normal.py) — Subclasses de Pokémon (Herança)
-* [`gerenciador_batalha.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/gerenciador_batalha.py) — Controle de fluxo e Lógica de Decisão da CPU
-* [`batalhaPkmn.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/batalhaPkmn.py) — Script demonstrativo de execução no terminal
+1. **Atributos Protegidos:** Os atributos `_hp` e `_hp_maximo` possuem um underline à esquerda (`_`), indicando que não devem ser alterados diretamente por arquivos externos.
+2. **Propriedades (Getters Seguros):** O método `@property def hp` permite consultar o valor atual do HP sem permitir alteração direta (`pokemon.hp = -50` gera erro).
+3. **Trava de Regras de Negócio em Métodos:**
+   * `receber_dano()`: Garante que o HP não fique menor que 0 (`dano_real = min(self._hp, quantidade)`).
+   * `curar_hp()`: Garante que a cura nunca faça o HP ultrapassar o valor definido em `_hp_maximo`.
+
+#### **Exemplo de Código (Encapsulamento em `pokemon.py`):**
+```python
+class Pokemon:
+    def __init__(self, nome: str, tipo: str, hp_maximo: int, ataque: Ataque):
+        self._hp_maximo = hp_maximo
+        self._hp = hp_maximo  # Atributo protegido
+
+    @property
+    def hp(self) -> int:
+        return self._hp  # Leitura segura (Getter)
+
+    def curar_hp(self, quantidade: int) -> int:
+        hp_antigo = self._hp
+        # Validação: Garante que não ultrapassa o HP máximo
+        self._hp = min(self._hp_maximo, self._hp + quantidade)
+        return self._hp - hp_antigo
+```
+
+---
+
+## Parte 2: Boas Práticas de Programação (Estrutura do Projeto)
+
+A solução foi desenvolvida de forma limpa, modular e altamente didática na linguagem **Python**, mantendo 1 classe por arquivo:
+
+* [`ataque.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/ataque.py) — Classe `Ataque` (`nome`, `poder`, `tipo`)
+* [`pokemon.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon.py) — Classe base `Pokemon` (Encapsulamento de `_hp`)
+* [`pokemon_agua.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon_agua.py) — Subclasse `PokemonAgua` (Herança)
+* [`pokemon_fogo.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pokemon_fogo.py) — Subclasse `PokemonFogo` (Herança)
+* [`item.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/item.py) — Classe abstrata base `Item` (Abstração com `ABC`)
+* [`pocao.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/pocao.py) — Subclasse `Pocao` (Herança + Polimorfismo)
+* [`batalhaPkmn.py`](file:///c:/Users/ryand/Desktop/Fatec/Semestre2/tecpro/batalhaPkmn.py) — Módulo de execução interativa da batalha por turnos
