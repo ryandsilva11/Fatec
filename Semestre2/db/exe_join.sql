@@ -1,72 +1,67 @@
-create database clinica0109;
+CREATE DATABASE biblioteca;
 
-create table medico(
-crm_medico varchar(15) primary key,
-nome_medico varchar(50));
+CREATE TABLE autor (
+    id_autor INT PRIMARY KEY,
+    nome_autor VARCHAR(100),
+    nacionalidade VARCHAR(50)
+);
 
-insert into medico values("123","Murillo de Souza");
-insert into medico values("1234","Julia Rocha");
+INSERT INTO autor (id_autor,nome_autor, nacionalidade) VALUES
+(1, 'Machado de Assis', 'Brasileira'),
+(2, 'J. K. Rowling', 'Britânica'),
+(3, 'George Orwell', 'Britânica'),
+(4, 'Clarice Lispector', 'Brasileira');
 
+CREATE TABLE livro (
+    id_livro INT PRIMARY KEY,
+    titulo VARCHAR(150),
+    ano_publicacao INT,
+    id_autor INT,
+    FOREIGN KEY (id_autor) REFERENCES autor(id_autor)
+);
 
-create table paciente( 
-id_paciente int primary key,
-nome_paciente varchar(50));
+INSERT INTO livro (id_livro, titulo, ano_publicacao, id_autor) VALUES
+(1, 'Dom Casmurro', 1899, 1),
+(2, 'Harry Potter e a Pedra Filosofal', 1997, 2),
+(3, '1984', 1949, 3),
+(4, 'A Hora da Estrela', 1977, 4);
 
-insert into paciente values(1, "Guilherme Vilela");
-insert into paciente values(2, "Otavio Pacheco");
+CREATE TABLE aluno (
+    id_aluno INT PRIMARY KEY,
+    nome_aluno VARCHAR(100),
+    curso VARCHAR(50)
+);
 
+INSERT INTO aluno (id_aluno, nome_aluno, curso) VALUES
+(1, 'Ryan Dias', 'Desenvolvimento de Software'),
+(2, 'Julia Rocha', 'Banco de Dados'),
+(3, 'Guilherme Vilela', 'Gestão Empresarial'),
+(4, 'Otavio Pacheco', 'Sistemas para Internet');
 
+CREATE TABLE emprestimo (
+    id_emprestimo INT PRIMARY KEY,
+    data_emprestimo DATE,
+    data_devolucao DATE,
+    id_livro INT,
+    id_aluno INT,
+    FOREIGN KEY (id_livro) REFERENCES livro(id_livro),
+    FOREIGN KEY (id_aluno) REFERENCES aluno(id_aluno)
+);
 
-create table consulta(
-id_consulta int primary key,
-data_consulta varchar(15),
-crm_medico varchar(15),
-id_paciente int,
-foreign key(crm_medico) references medico(crm_medico),
-foreign key(id_paciente) references paciente(id_paciente));
+INSERT INTO emprestimo (id_emprestimo, data_emprestimo, data_devolucao, id_livro, id_aluno) VALUES
+(1, '2026-09-01', '2026-09-15', 1, 1),
+(2, '2026-09-02', '2026-09-16', 2, 2),
+(3, '2026-09-03', '2026-09-17', 3, 3),
+(4, '2026-09-04', '2026-09-18', 4, 4);
 
-
-insert into consulta values(286, "08/09/2025","1234",2);
-  
-
-select * from paciente;
-
-select nome_paciente from paciente where id_paciente = 1;
-
-Se eu quero saber:
-QUAL O NOME DO PACIENTE?
-QUAL O NOME DO MÉDICO?
-DATA QUE ESSE PACIENTE FOI CONSULTADO?????
-
------------------------------------------------------
-
-SELECT nome_medico,nome_paciente, data_consulta from medico, paciente, consulta;
-  
-
-select nome_medico,nome_paciente, data_consulta 
-from medico, paciente, consulta where 
-medico.crm_medico = consulta.crm_medico and
-paciente.id_paciente = consulta.id_paciente;
-  
-select m.nome_medico,p.nome_paciente, data_consulta 
-from medico m, paciente p, consulta c where 
-m.crm_medico = c.crm_medico and
-p.id_paciente = c.id_paciente;
-
-
-Delete from paciente where id_paciente = 1;
-
-NÃO EXISTE DELETE SEM WHERE!!!!!!
-
-
-
-
-
-select nome_paciente, nome_medico, data_consulta from paciente, medico, consulta where paciente.id_paciente=consulta.id_paciente and medico.crm_medico= consulta.crm_medico;
-   
-alias = apelido!!!
-
-select nome paciente, nome_medico, data_consulta from paciente p, medico m , consulta c where p.id_paciente=c.id_paciente and m.crm_medico= c.crm_medico;
-
-
-delete from paciente where id_paciente=1;
+SELECT 
+    livro.titulo,
+    aluno.nome_aluno,
+    autor.nome_autor,
+    emprestimo.data_emprestimo
+FROM
+    emprestimo, aluno, livro, autor
+WHERE
+    emprestimo.id_aluno = aluno.id_aluno AND
+    emprestimo.id_livro = livro.id_livro AND
+    livro.id_autor = autor.id_autor;
