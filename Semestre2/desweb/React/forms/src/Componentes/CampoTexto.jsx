@@ -19,8 +19,16 @@ export default function CampoTexto() {
             <input
                 type="text"
                 placeholder="Digite um nome: "
-                onChange={handleTyping}>
+                onChange={(e) => { setNome(e.target.value) }}>
             </input>
+
+            <button onClick={adicionarNome}>Adicionar</button>
+
+            <ul>
+                {lista.map((item, index) => (
+                    <li key={index}>{item}</li>
+                ))}
+            </ul>
         </div>
     )
 
