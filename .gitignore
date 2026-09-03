@@ -2,3 +2,9 @@ node_modules/
 **/node_modules/
 dist/
 .env
+# Ignorar executáveis e arquivos de compilação
+*.exe
+*.o
+build/
+Debug/
+.vscode/
