@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagrama de Classes — Sistema Acadêmico</title>
+  <style>
+    :root {
+      --paper: #EDEFF3;
+      --card: #FFFFFF;
+      --ink: #1B2333;
+      --ink-soft: #5B6478;
+      --rule: #D3D7E0;
+      --curso: #2B4C8C;
+      --disciplina: #1F7A5C;
+      --professores: #9A6B12;
+      --aluno: #8C2E56;
+      --matricula: #4B4F63;
+      --public: #1F7A5C;
+      --private: #A32C2C;
+      --protected: #9A6B12;
+      --package: #4B5A8C;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+      padding: 28px 16px 60px;
+    }
+
+    header {
+      max-width: 1180px;
+      margin: 0 auto 28px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0 0 6px;
+    }
+
+    .sub {
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      max-width: 640px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 16px;
+      font-family: 'IBM Plex Mono', Consolas, monospace;
+      font-size: 0.82rem;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--ink-soft);
+    }
+
+    .legend b {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      color: white;
+      font-weight: 700;
+    }
+
+    .legend .pub b {
+      background: var(--public);
+    }
+
+    .legend .priv b {
+      background: var(--private);
+    }
+
+    .legend .prot b {
+      background: var(--protected);
+    }
+
+    .legend .pack b {
+      background: var(--package);
+    }
+
+    .grid {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-head {
+      padding: 12px 14px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.98rem;
+    }
+
+    .compartment {
+      padding: 10px 14px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .compartment-label {
+      font-size: 0.68rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+
+    .row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 3px 0;
+      font-family: 'IBM Plex Mono', Consolas, monospace;
+      font-size: 0.84rem;
+    }
+
+    .vis-toggle {
+      flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: none;
+      color: white;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.12s ease;
+    }
+
+    .vis-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .vis-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .vis-public {
+      background: var(--public);
+    }
+
+    .vis-private {
+      background: var(--private);
+    }
+
+    .vis-protected {
+      background: var(--protected);
+    }
+
+    .vis-package {
+      background: var(--package);
+    }
+
+    .field-name {
+      color: var(--ink);
+    }
+
+    .method-name::after {
+      content: "()";
+      color: var(--ink-soft);
+    }
+
+    footer {
+      max-width: 1180px;
+      margin: 24px auto 0;
+      color: var(--ink-soft);
+      font-size: 0.8rem;
+    }
+
+    .toolbar {
+      max-width: 1180px;
+      margin: 0 auto 22px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toolbar button {
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--rule);
+      background: var(--card);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .toolbar button.primary {
+      background: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+
+    .toolbar button:hover {
+      opacity: 0.85;
+    }
+
+    .toolbar button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .status {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+    }
+
+    .status.err {
+      color: var(--private);
+    }
+
+    .status.ok {
+      color: var(--public);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Diagrama de Classes — Sistema Acadêmico</h1>
+    <div class="sub">Clique no quadrado colorido ao lado de cada atributo ou método para alternar entre público,
+      privado, protegido e pacote.</div>
+    <div class="legend">
+      <span class="pub"><b>+</b> Público</span>
+      <span class="priv"><b>−</b> Privado</span>
+      <span class="prot"><b>#</b> Protegido</span>
+      <span class="pack"><b>~</b> Pacote</span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <button class="primary" id="btnSave">Salvar</button>
+    <button id="btnCopy">Copiar resumo p/ compartilhar</button>
+    <button id="btnReset">Restaurar padrão</button>
+    <span class="status" id="status">Carregando...</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>Toque nos símbolos para ajustar a visibilidade. As alterações ficam salvas neste link para todos que abrirem —
+    combine com o grupo antes de mudar algo. Use "Copiar resumo" para colar no WhatsApp ou e-mail e enviar ao professor.
+  </footer>
+
+  <script>
+    const VIS_ORDER = ['public', 'private', 'protected', 'package'];
+    const VIS_SYMBOL = { public: '+', private: '−', protected: '#', package: '~' };
+
+    const classes = [
+      {
+        name: 'Curso',
+        color: '#2B4C8C',
+        attrs: ['ID Curso', 'Nome', 'Área', 'Desc', 'Coordenador', 'MatrizCurricular', 'CargaHoraria', 'TempoConclusao', 'TempoFinalizacao'],
+        methods: ['Cadastrar', 'Alterar', 'Consultar', 'Excluir', 'Suspender']
+      },
+      {
+        name: 'Disciplina',
+        color: '#1F7A5C',
+        attrs: ['ID_Disciplina', 'Nome', 'ID-Curso', 'CargaHoraria', 'Notas', 'NumeroVagas', 'Bibliografia', 'Ementa', 'ProfResponsavel', 'Sala'],
+        methods: ['Cadastrar', 'Alterar', 'Excluir', 'Consultar', 'Suspender']
+      },
+      {
+        name: 'Professores',
+        color: '#9A6B12',
+        attrs: ['RM', 'Nome', 'CPF', 'Endereco', 'Telefone', 'Formacao', 'SalarioBase', 'Disc_Concursada', 'Disc_Atribuidas', 'DataAdmin', 'EstadoCivil', 'NumeroDeptes', 'CargaHoraria', 'Historico'],
+        methods: ['Cadastrar', 'Alterar', 'Excluir', 'Suspender', 'Consultar']
+      },
+      {
+        name: 'Aluno',
+        color: '#8C2E56',
+        attrs: ['RA', 'Nome', 'CPF', 'RG', 'Endereco', 'Telefone', 'Email', 'Curso', 'Estatus'],
+        methods: ['Cadastrar', 'Excluir', 'Suspender', 'Jubilar', 'Consultar', 'Alterar']
+      },
+      {
+        name: 'Matricula',
+        color: '#4B4F63',
+        attrs: ['ID_Matricula', 'RA', 'DataMatricula', 'ID_disciplina', 'Status'],
+        methods: ['Cadastrar', 'Excluir', 'Alterar', 'Suspender', 'Consultar']
+      }
+    ];
+
+    // default visibility: attributes start private, methods start public
+    function buildState() {
+      return classes.map(c => ({
+        ...c,
+        attrs: c.attrs.map(name => ({ name, vis: 'private' })),
+        methods: c.methods.map(name => ({ name, vis: 'public' }))
+      }));
+    }
+
+    let state = buildState();
+
+    const STORAGE_KEY = 'diagrama-classes-visibilidade';
+    const statusEl = document.getElementById('status');
+
+    function setStatus(text, kind) {
+      statusEl.textContent = text;
+      statusEl.className = 'status' + (kind ? ' ' + kind : '');
+    }
+
+    // Serialize only the parts that can change (visibility), keyed by class+item name,
+    // so it stays valid even if colors/labels are tweaked later.
+    function serializeVis(s) {
+      const out = {};
+      s.forEach(cls => {
+        out[cls.name] = {
+          attrs: cls.attrs.map(a => a.vis),
+          methods: cls.methods.map(m => m.vis)
+        };
+      });
+      return out;
+    }
+
+    function applyVis(s, saved) {
+      s.forEach(cls => {
+        const entry = saved[cls.name];
+        if (!entry) return;
+        cls.attrs.forEach((a, i) => { if (entry.attrs && entry.attrs[i]) a.vis = entry.attrs[i]; });
+        cls.methods.forEach((m, i) => { if (entry.methods && entry.methods[i]) m.vis = entry.methods[i]; });
+      });
+    }
+
+    async function loadState() {
+      try {
+        if (!window.storage) {
+          setStatus('Modo local — as alterações não são salvas neste dispositivo/visualização.', '');
+          return;
+        }
+        const result = await window.storage.get(STORAGE_KEY, true);
+        if (result && result.value) {
+          const saved = JSON.parse(result.value);
+          applyVis(state, saved);
+          setStatus('Carregado da última versão salva.', 'ok');
+        } else {
+          setStatus('Nenhuma versão salva ainda — usando padrão.', '');
+        }
+      } catch (e) {
+        setStatus('Nenhuma versão salva ainda — usando padrão.', '');
+      }
+      render();
+    }
+
+    async function saveState() {
+      if (!window.storage) {
+        setStatus('Este visualizador não suporta salvar (abra pelo Claude para salvar).', 'err');
+        return;
+      }
+      const btn = document.getElementById('btnSave');
+      btn.disabled = true;
+      setStatus('Salvando...', '');
+      try {
+        const result = await window.storage.set(STORAGE_KEY, JSON.stringify(serializeVis(state)), true);
+        if (result) {
+          setStatus('Salvo — visível para quem abrir este mesmo diagrama.', 'ok');
+        } else {
+          setStatus('Não foi possível salvar. Tente novamente.', 'err');
+        }
+      } catch (e) {
+        setStatus('Erro ao salvar. Tente novamente.', 'err');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function buildSummaryText() {
+      const lines = ['Diagrama de Classes — Sistema Acadêmico', ''];
+      state.forEach(cls => {
+        lines.push(cls.name);
+        cls.attrs.forEach(a => lines.push(`  ${VIS_SYMBOL[a.vis]} ${a.name}`));
+        cls.methods.forEach(m => lines.push(`  ${VIS_SYMBOL[m.vis]} ${m.name}()`));
+        lines.push('');
+      });
+      lines.push('(+ público  − privado  # protegido  ~ pacote)');
+      return lines.join('\n');
+    }
+
+    async function copySummary() {
+      const text = buildSummaryText();
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        setStatus('Resumo copiado — cole no WhatsApp ou e-mail para o professor.', 'ok');
+      } catch (e) {
+        setStatus('Não foi possível copiar automaticamente. Selecione o texto manualmente.', 'err');
+      }
+    }
+
+    function resetState() {
+      state = buildState();
+      render();
+      setStatus('Restaurado ao padrão (não salvo ainda).', '');
+    }
+
+    function cycleVis(current) {
+      const idx = VIS_ORDER.indexOf(current);
+      return VIS_ORDER[(idx + 1) % VIS_ORDER.length];
+    }
+
+    function render() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      state.forEach((cls, ci) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const head = document.createElement('div');
+        head.className = 'card-head';
+        head.style.background = cls.color;
+        head.textContent = cls.name;
+        card.appendChild(head);
+
+        const attrComp = document.createElement('div');
+        attrComp.className = 'compartment';
+        const attrLabel = document.createElement('div');
+        attrLabel.className = 'compartment-label';
+        attrLabel.textContent = 'Atributos';
+        attrComp.appendChild(attrLabel);
+
+        cls.attrs.forEach((item, ai) => {
+          attrComp.appendChild(makeRow(item, ci, 'attrs', ai, false));
+        });
+        card.appendChild(attrComp);
+
+        const methComp = document.createElement('div');
+        methComp.className = 'compartment';
+        const methLabel = document.createElement('div');
+        methLabel.className = 'compartment-label';
+        methLabel.textContent = 'Métodos';
+        methComp.appendChild(methLabel);
+
+        cls.methods.forEach((item, mi) => {
+          methComp.appendChild(makeRow(item, ci, 'methods', mi, true));
+        });
+        card.appendChild(methComp);
+
+        grid.appendChild(card);
+      });
+    }
+
+    function makeRow(item, classIndex, group, itemIndex, isMethod) {
+      const row = document.createElement('div');
+      row.className = 'row';
+
+      const btn = document.createElement('button');
+      btn.className = 'vis-toggle vis-' + item.vis;
+      btn.textContent = VIS_SYMBOL[item.vis];
+      btn.title = 'Clique para alternar visibilidade';
+      btn.addEventListener('click', () => {
+        item.vis = cycleVis(item.vis);
+        render();
+      });
+      row.appendChild(btn);
+
+      const label = document.createElement('span');
+      label.className = isMethod ? 'field-name method-name' : 'field-name';
+      label.textContent = item.name;
+      row.appendChild(label);
+
+      return row;
+    }
+
+    document.getElementById('btnSave').addEventListener('click', saveState);
+    document.getElementById('btnCopy').addEventListener('click', copySummary);
+    document.getElementById('btnReset').addEventListener('click', resetState);
+
+    loadState();
+  </script>
+
+</body>
+
+</html>
