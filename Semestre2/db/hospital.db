@@ -26,3 +26,72 @@ INSERT INTO paciente values(2, "Ryan");
 INSERT INTO paciente values(3, "Gueviti");
 INSERT INTO paciente values(4, "Chalicoterio");
 
+-- Inserindo consultas para testes
+INSERT INTO consulta values(1, "10/09/2026", 1, 1);
+INSERT INTO consulta values(2, "11/09/2026", 2, 1);
+
+-- ------------------------------------------------------------
+-- 1. INNER JOIN
+-- Retorna apenas os registros com correspondência mútua
+-- (Pacientes que têm consulta marcada)
+-- ------------------------------------------------------------
+SELECT 
+    paciente.codigo_paciente,
+    paciente.nome_paciente,
+    consulta.codigo_consulta,
+    consulta.data_consulta
+FROM paciente
+INNER JOIN consulta 
+    ON paciente.codigo_paciente = consulta.codigo_paciente;
+
+-- ------------------------------------------------------------
+-- 2. RIGHT JOIN
+-- Retorna todos os registros da tabela da direita (paciente),
+-- inclusive os que não possuem correspondência na esquerda
+-- ------------------------------------------------------------
+SELECT 
+    paciente.codigo_paciente,
+    paciente.nome_paciente,
+    consulta.codigo_consulta,
+    consulta.data_consulta
+FROM consulta
+RIGHT JOIN paciente 
+    ON consulta.codigo_paciente = paciente.codigo_paciente;
+
+-- ------------------------------------------------------------
+-- 3. LEFT EXCLUDING (LEFT JOIN com WHERE ... IS NULL)
+-- Retorna exclusivamente os registros da tabela da esquerda (paciente)
+-- que NÃO possuem nenhum registro relacionado na direita (consulta)
+-- (Pacientes que NÃO têm consulta)
+-- ------------------------------------------------------------
+SELECT 
+    paciente.codigo_paciente,
+    paciente.nome_paciente
+FROM paciente
+LEFT JOIN consulta 
+    ON paciente.codigo_paciente = consulta.codigo_paciente
+WHERE consulta.codigo_paciente IS NULL;
+
+-- ------------------------------------------------------------
+-- 4. RIGHT EXCLUDING (RIGHT JOIN com WHERE ... IS NULL)
+-- Retorna exclusivamente os registros da tabela da direita
+-- que NÃO possuem nenhum registro relacionado na esquerda
+-- ------------------------------------------------------------
+-- Exemplo A: Pacientes que NÃO têm consulta (usando RIGHT JOIN)
+SELECT 
+    paciente.codigo_paciente,
+    paciente.nome_paciente
+FROM consulta
+RIGHT JOIN paciente 
+    ON consulta.codigo_paciente = paciente.codigo_paciente
+WHERE consulta.codigo_paciente IS NULL;
+
+-- Exemplo B: Médicos que NÃO possuem consultas realizadas
+SELECT 
+    medico.crm_medico,
+    medico.nome_medico
+FROM consulta
+RIGHT JOIN medico 
+    ON consulta.crm_medico = medico.crm_medico
+WHERE consulta.crm_medico IS NULL;
+
