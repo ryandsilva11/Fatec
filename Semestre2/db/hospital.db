@@ -25,3 +25,48 @@ INSERT INTO paciente values(1, "Murilo");
 INSERT INTO paciente values(2, "Ryan");
 INSERT INTO paciente values(3, "Gueviti");
 INSERT INTO paciente values(4, "Chalicoterio");
+    paciente.codigo_paciente,
+    paciente.nome_paciente,
+    consulta.codigo_consulta,
+    consulta.data_consulta
+
+FROM paciente
+INNER JOIN consulta 
+    ON paciente.codigo_paciente = consulta.codigo_paciente;
+
+
+SELECT 
+    paciente.codigo_paciente,
+    paciente.nome_paciente,
+    consulta.codigo_consulta,
+    consulta.data_consulta
+FROM consulta
+RIGHT JOIN paciente 
+    ON consulta.codigo_paciente = paciente.codigo_paciente;
+
+
+SELECT 
+    paciente.codigo_paciente,
+    paciente.nome_paciente
+FROM paciente
+LEFT JOIN consulta 
+    ON paciente.codigo_paciente = consulta.codigo_paciente
+WHERE consulta.codigo_paciente IS NULL;
+
+
+SELECT 
+    paciente.codigo_paciente,
+    paciente.nome_paciente
+FROM consulta
+RIGHT JOIN paciente 
+    ON consulta.codigo_paciente = paciente.codigo_paciente
+WHERE consulta.codigo_paciente IS NULL;
+
+SELECT 
+    medico.crm_medico,
+    medico.nome_medico
+FROM consulta
+RIGHT JOIN medico 
+    ON consulta.crm_medico = medico.crm_medico
+WHERE consulta.crm_medico IS NULL;
+
