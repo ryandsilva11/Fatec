@@ -1,0 +1,44 @@
+body{
+    background: linear-gradient(180deg, #0b0f1a, #111827);
+    background-image: url("../img/space.png");
+    background-size: cover;
+    font-family: Roboto;
+    font-size: 18px;
+    color: #e5e7eb;
+    margin: 30px;
+}
+
+.container{
+    margin: 20px;
+}
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead th{
+    padding: 10px;
+    
+}
+
+td{
+    padding: 5px;
+}
+
+td, th{
+    border: 1px solid blue;
+    text-align: center;
+}
+
+tbody tr:nth-child(even){
+    background-color: gray;
+}
+
+tbody tr{
+    transition: 0.5s ease;
+}
+
+tbody  tr:hover{
+    background-color: rgb(30, 66, 54);
+}
