@@ -49,3 +49,5 @@ INSERT INTO fornecedor (cnpj, nome, telefone, email, endereco) VALUES
 INSERT INTO compra (codCompra, cpfCliente, codProduto, dataCompra, quantidade) VALUES 
 (1, '111.222.333-44', 1, '2026-09-15', 2),
 (2, '555.666.777-88', 2, '2026-09-15', 1);
+
+SELECT * FROM compra WHERE codCompra = 1;
