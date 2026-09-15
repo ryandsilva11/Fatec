@@ -51,3 +51,5 @@ INSERT INTO compra (codCompra, cpfCliente, codProduto, dataCompra, quantidade) V
 (2, '555.666.777-88', 2, '2026-09-15', 1);
 
 SELECT * FROM compra WHERE codCompra = 1;
+
+UPDATE cliente SET nome = "Guéviti da Silva" WHERE cpf = "111.222.333-44";
