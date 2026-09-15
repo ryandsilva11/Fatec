@@ -8,7 +8,7 @@ CREATE TABLE cliente(
 );
 
 CREATE TABLE produto(
-    codProduto int primary key.
+    codProduto int primary key,
     precoCompra decimal(10,2),
     nome varchar(50),
     marca varchar(30),
@@ -25,4 +25,27 @@ CREATE TABLE fornecedor(
 ); 
 
 CREATE TABLE compra(
+    codCompra int primary key,
+    cpfCliente char(14),
+    codProduto int,
+    dataCompra date,
+    quantidade int,
+    foreign key (cpfCliente) references cliente(cpf),
+    foreign key (codProduto) references produto(codProduto)
 );
+
+INSERT INTO cliente (email, telefone, cpf, nome) VALUES 
+('carlos.silva@email.com', '11988887777', '111.222.333-44', 'Carlos Eduardo Silva'),
+('mariana.souza@email.com', '11977776666', '555.666.777-88', 'Mariana Souza');
+
+INSERT INTO produto (codProduto, precoCompra, nome, marca, quntidade, especieDestinada) VALUES 
+(1, 45.00, 'Óleo Motor 5W30', 'Castrol', 50, 'Carro'),
+(2, 120.50, 'Pastilha de Freio', 'Bosch', 30, 'Carro');
+
+INSERT INTO fornecedor (cnpj, nome, telefone, email, endereco) VALUES 
+('12345678000199', 'Distribuidora AutoPeças Brasil', '1133334444', 'contato@autopecasbr.com', 'Av. Industrial, 1500 - SP'),
+('98765432000111', 'Lubrificantes & Cia', '1122221111', 'vendas@lubrificantes.com', 'Rua das Oficinas, 45 - SP');
+
+INSERT INTO compra (codCompra, cpfCliente, codProduto, dataCompra, quantidade) VALUES 
+(1, '111.222.333-44', 1, '2026-09-15', 2),
+(2, '555.666.777-88', 2, '2026-09-15', 1);
