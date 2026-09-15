@@ -53,3 +53,31 @@ INSERT INTO compra (codCompra, cpfCliente, codProduto, dataCompra, quantidade) V
 SELECT * FROM compra WHERE codCompra = 1;
 
 UPDATE cliente SET nome = "Guéviti da Silva" WHERE cpf = "111.222.333-44";
+
+SELECT 
+    compra.codCompra,
+    cliente.nome AS nome_cliente,
+    produto.nome AS nome_produto,
+    compra.quantidade,
+    compra.dataCompra
+FROM compra
+INNER JOIN cliente ON compra.cpfCliente = cliente.cpf
+INNER JOIN produto ON compra.codProduto = produto.codProduto;
+
+SELECT 
+    cliente.nome AS nome_cliente,
+    cliente.cpf,
+    compra.codCompra,
+    compra.dataCompra,
+    compra.quantidade
+FROM cliente
+LEFT JOIN compra ON cliente.cpf = compra.cpfCliente;
+
+SELECT 
+    produto.codProduto,
+    produto.nome AS nome_produto,
+    produto.precoCompra,
+    compra.codCompra,
+    compra.quantidade
+FROM compra
+RIGHT JOIN produto ON compra.codProduto = produto.codProduto;
