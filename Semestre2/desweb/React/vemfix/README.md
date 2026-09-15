@@ -16,8 +16,8 @@ Esta versão do projeto consiste na migração e componentização completa para
 
 ## 👥 Integrantes do Grupo
 
-* **Ryan Dias da Silva** (Integrante responsável pela entrega)
-* `[Nome do Integrante 2 - RA / Função]`
+* Ryan Dias da Silva
+* Murilo Paes Sobrinho
 * `[Nome do Integrante 3 - RA / Função]`
 * `[Nome do Integrante 4 - RA / Função]`
 
