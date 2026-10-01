@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>LE03-ED: Resolução Completa - Pilhas e Filas em C</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 10mm 14mm 10mm 14mm;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1a202c;
+    background-color: #ffffff;
+    line-height: 1.36;
+    font-size: 8.8pt;
+    margin: 0;
+    padding: 0;
+  }
+  .page {
+    page-break-after: always;
+    height: 275mm;
+    max-height: 275mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .page:last-child {
+    page-break-after: avoid;
+  }
+  .header {
+    border-bottom: 2px solid #2b6cb0;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header-left h1 {
+    font-size: 13pt;
+    margin: 0 0 2px 0;
+    color: #1a365d;
+    font-weight: 700;
+  }
+  .header-left h2 {
+    font-size: 9.5pt;
+    margin: 0;
+    color: #2b6cb0;
+    font-weight: 600;
+  }
+  .header-right {
+    text-align: right;
+    font-size: 8pt;
+    color: #4a5568;
+    line-height: 1.3;
+  }
+
+  /* Student Info Box */
+  .student-box {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #3182ce;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .student-item {
+    font-size: 8.5pt;
+    color: #2d3748;
+  }
+  .student-item strong {
+    color: #1a365d;
+  }
+
+  .section-banner {
+    background-color: #ebf8ff;
+    border-left: 4px solid #3182ce;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #2b6cb0;
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .section-badge {
+    font-size: 7.5pt;
+    font-weight: 600;
+    background-color: #3182ce;
+    color: #ffffff;
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+
+  /* Grid for Part 1 */
+  .q-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+  .q-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 6px 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .q-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #edf2f7;
+  }
+  .q-number {
+    font-weight: 700;
+    font-size: 8.5pt;
+    color: #2b6cb0;
+  }
+  .q-alt {
+    font-size: 8pt;
+    font-weight: 700;
+    background-color: #e6fffa;
+    color: #234e52;
+    border: 1px solid #b2f5ea;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .q-desc {
+    font-size: 7.8pt;
+    color: #4a5568;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  /* Scenario styles for Part 2 */
+  .scenario-title {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .scenario-badge {
+    font-size: 7.5pt;
+    font-weight: 600;
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+    padding: 2px 7px;
+    border-radius: 10px;
+    border: 1px solid #bee3f8;
+  }
+  .error-box {
+    background-color: #fffaf0;
+    border: 1px solid #feebc8;
+    border-left: 4px solid #dd6b20;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+  }
+  .error-box-title {
+    font-weight: 700;
+    color: #c05621;
+    font-size: 8pt;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .error-box ol, .error-box ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .error-box li {
+    margin-bottom: 3px;
+    color: #2d3748;
+    font-size: 8.3pt;
+    line-height: 1.3;
+  }
+  .error-box li:last-child {
+    margin-bottom: 0;
+  }
+  .error-box strong {
+    color: #9c4221;
+  }
+  .code-container {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .code-header {
+    background-color: #edf2f7;
+    border-bottom: 1px solid #cbd5e0;
+    padding: 3px 8px;
+    font-size: 8pt;
+    font-weight: 700;
+    color: #4a5568;
+    display: flex;
+    justify-content: space-between;
+  }
+  pre {
+    margin: 0;
+    padding: 6px 8px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 7.6pt;
+    line-height: 1.26;
+    color: #2d3748;
+    tab-size: 2;
+  }
+  .kw { color: #805ad5; font-weight: bold; }
+  .type { color: #2b6cb0; font-weight: bold; }
+  .fn { color: #b7791f; }
+  .str { color: #2f855a; }
+  .com { color: #718096; font-style: italic; }
+  .num { color: #c53030; }
+
+  .footer {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7.5pt;
+    color: #718096;
+    margin-top: auto;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ==================== PÁGINA 1: PARTE 1 ==================== -->
+  <div class="page">
+    <div class="header">
+      <div class="header-left">
+        <h1>Estrutura de Dados (ED) — Linguagem C</h1>
+        <h2>LE03-ED: Pilhas e Filas em C</h2>
+      </div>
+      <div class="header-right">
+        <strong>FATEC — Semestre 2</strong><br>
+        Laboratório de ED em C
+      </div>
+    </div>
+
+    <!-- Identificação dos Alunos -->
+    <div class="student-box">
+      <div class="student-item">
+        <strong>Aluno 1:</strong> Ryan Dias da Silva &nbsp;|&nbsp; <strong>RA:</strong> 1051392611004
+      </div>
+      <div class="student-item">
+        <strong>Aluno 2:</strong> Murilo Paes Sobrinho &nbsp;|&nbsp; <strong>RA:</strong> 1051392611041
+      </div>
+    </div>
+
+    <div class="section-banner">
+      <span>Parte 1: Respostas das Questões de Múltipla Escolha</span>
+      <span class="section-badge">10 Questões</span>
+    </div>
+
+    <div class="q-grid">
+      <!-- Q1 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 1 (Pilhas)</span>
+          <span class="q-alt">Alternativa A</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> Executando as operações passo a passo: entra 10, entra 20, sai 20 (resta 10), entra 30, entra 40, sai 40 (restam 10 e 30), entra 50. A pilha final contém 10, 30 e 50, totalizando 3 elementos com o 50 no topo.</p>
+      </div>
+
+      <!-- Q6 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 6 (Filas)</span>
+          <span class="q-alt">Alternativa B</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> Após as três inserções, a fila contém [10, 20, 30]. O primeiro dequeue remove o 10. A inserção do 40 resulta em [20, 30, 40]. O segundo dequeue remove o 20. Os elementos restantes são [30, 40], sendo o 30 o elemento na frente.</p>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 2 (Pilhas)</span>
+          <span class="q-alt">Alternativa C</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> O valor -1 indica uma pilha vazia, permitindo que a primeira inserção, usando pré-incremento (++topo), ocorra de forma segura no índice 0, que é a primeira posição válida em arrays na linguagem C.</p>
+      </div>
+
+      <!-- Q7 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 7 (Filas)</span>
+          <span class="q-alt">Alternativa B</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> Filas estáticas lineares sem reaproveitamento sofrem de desperdício de memória nas posições iniciais. A solução é utilizar um Buffer Circular com o operador de módulo matemático (%).</p>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 3 (Pilhas)</span>
+          <span class="q-alt">Alternativa D</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> A primeira string <code>((a+b)*c)</code> possui parênteses corretamente balanceados, retornando 1 (válida). A segunda string <code>((a+b)</code> possui um parêntese de abertura sem fechamento correspondente, retornando 0 (inválida).</p>
+      </div>
+
+      <!-- Q8 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 8 (Filas)</span>
+          <span class="q-alt">Alternativa D</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> Para garantir que inserções e remoções operem em tempo constante O(1), a estrutura exige dois ponteiros: um na frente para remoções e outro no final (cauda) para inserções.</p>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 4 (Pilhas)</span>
+          <span class="q-alt">Alternativa B</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> O comportamento da operação clássica <code>peek()</code> (ou top) é inspecionar e retornar o valor localizado no topo da pilha sem removê-lo ou alterar o estado da estrutura.</p>
+      </div>
+
+      <!-- Q9 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 9 (Filas)</span>
+          <span class="q-alt">Alternativa B</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> O gerenciamento de um spooler de impressão de rede que atende requisições de múltiplos usuários obedece à ordem natural de chegada (FIFO), que é a aplicação ideal e clássica de uma fila.</p>
+      </div>
+
+      <!-- Q5 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 5 (Pilhas)</span>
+          <span class="q-alt">Alternativa E</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> O escalonamento de processos de CPU por ordem estrita de chegada de requisições de prioridade igual segue o comportamento de uma Fila (FIFO), não sendo uma aplicação de Pilha (LIFO).</p>
+      </div>
+
+      <!-- Q10 -->
+      <div class="q-card">
+        <div class="q-card-header">
+          <span class="q-number">Questão 10 (Filas)</span>
+          <span class="q-alt">Alternativa C</span>
+        </div>
+        <p class="q-desc"><strong>Justificativa:</strong> A pilha necessita de apenas um ponteiro para rastreamento (o topo), ao passo que a fila necessita de dois indicadores (início e fim) para gerenciar as duas extremidades ativas.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>FATEC — Ryan Dias da Silva (1051392611004) & Murilo Paes Sobrinho (1051392611041)</span>
+      <span>Página 1 de 5</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 2: PARTE 2.1 ==================== -->
+  <div class="page">
+    <div class="header">
+      <div class="header-left">
+        <h1>Estrutura de Dados (ED) — Linguagem C</h1>
+        <h2>LE03-ED: Pilhas e Filas em C</h2>
+      </div>
+      <div class="header-right">
+        <strong>Parte 2: Análise de Código e Correção de Erros</strong><br>
+        Gabarito Técnico Oficial
+      </div>
+    </div>
+
+    <div class="scenario-title">
+      <span>2.1) Script Errado 1: Script com Erro sobre Pilha (61Exemplo_Bug.c)</span>
+      <span class="scenario-badge">Pilha Estática (Vetor)</span>
+    </div>
+
+    <div class="error-box">
+      <div class="error-box-title">Lista de Erros Técnicos (Para o Professor):</div>
+      <ul>
+        <li><strong>Falta de validação de subfluxo (Stack Underflow):</strong> A função <code>pop()</code> não verifica se a pilha está vazia (<code>topo == -1</code>) antes de acessar o vetor. Ao desempilhar com a pilha vazia, tenta ler <code>pilha[-1]</code>, provocando leitura fora dos limites (<em>out-of-bounds array access</em>) e comportamento indefinido.</li>
+        <li><strong>Corrupção do índice de controle (<code>topo</code>):</strong> O operador de pós-decremento <code>topo--</code> decrementa <code>-1</code> para <code>-2</code>, corrompendo o estado interno da pilha e desregulando qualquer inserção ou remoção futura.</li>
+        <li><strong>Execução de <code>pop()</code> prematuro na <code>main()</code>:</strong> A função principal executa <code>pop()</code> imediatamente após a inicialização sem nenhuma inserção prévia (<code>push()</code>), disparando o erro de Underflow de imediato.</li>
+      </ul>
+    </div>
+
+    <div class="code-container">
+      <div class="code-header">
+        <span>Listagem 1.2: Código Correto</span>
+        <span>61Exemplo_Corrigido.c</span>
+      </div>
+      <pre><span class="com">#include &lt;stdio.h&gt;</span>
+<span class="kw">#define</span> MAX <span class="num">5</span>
+
+<span class="type">int</span> pilha[MAX];
+<span class="type">int</span> topo = -<span class="num">1</span>;
+
+<span class="type">int</span> <span class="fn">push</span>(<span class="type">int</span> valor) {
+    <span class="kw">if</span> (topo &gt;= MAX - <span class="num">1</span>) {
+        <span class="fn">printf</span>(<span class="str">"Erro: Pilha cheia (Stack Overflow)!\n"</span>);
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
+    pilha[++topo] = valor;
+    <span class="kw">return</span> <span class="num">1</span>;
+}
+
+<span class="type">int</span> <span class="fn">pop</span>() {
+    <span class="com">// Validacao obrigatoria de subfluxo (Stack Underflow)</span>
+    <span class="kw">if</span> (topo == -<span class="num">1</span>) {
+        <span class="fn">printf</span>(<span class="str">"Erro: Pilha vazia (Stack Underflow)!\n"</span>);
+        <span class="kw">return</span> -<span class="num">1</span>;
+    }
+    <span class="kw">return</span> pilha[topo--];
+}
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="fn">push</span>(<span class="num">10</span>);
+    <span class="fn">push</span>(<span class="num">20</span>);
+    <span class="fn">printf</span>(<span class="str">"Desempilhando: %d\n"</span>, <span class="fn">pop</span>()); <span class="com">// Retorna 20</span>
+    <span class="fn">printf</span>(<span class="str">"Desempilhando: %d\n"</span>, <span class="fn">pop</span>()); <span class="com">// Retorna 10</span>
+    <span class="fn">printf</span>(<span class="str">"Desempilhando: %d\n"</span>, <span class="fn">pop</span>()); <span class="com">// Dispara aviso seguro de Underflow</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+
+    <div class="footer">
+      <span>FATEC — Ryan Dias da Silva (1051392611004) & Murilo Paes Sobrinho (1051392611041)</span>
+      <span>Página 2 de 5</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 3: PARTE 2.2 ==================== -->
+  <div class="page">
+    <div class="header">
+      <div class="header-left">
+        <h1>Estrutura de Dados (ED) — Linguagem C</h1>
+        <h2>LE03-ED: Pilhas e Filas em C</h2>
+      </div>
+      <div class="header-right">
+        <strong>Parte 2: Análise de Código e Correção de Erros</strong><br>
+        Gabarito Técnico Oficial
+      </div>
+    </div>
+
+    <div class="scenario-title">
+      <span>2.2) Cenário 2: Script com Erro sobre Pilha Dinâmica (62Exemplo_Bug.c)</span>
+      <span class="scenario-badge">Pilha Dinâmica Encadeada</span>
+    </div>
+
+    <div class="error-box">
+      <div class="error-box-title">Lista de Erros Técnicos (Para o Professor):</div>
+      <ol>
+        <li><strong>Vazamento de Memória (<em>Memory Leak</em>) no <code>pop()</code>:</strong> O ponteiro <code>topo</code> é avançado para <code>topo-&gt;proximo</code> sem antes desalocar o nó desempilhado com <code>free()</code>. O bloco de memória permanece alocado no <em>Heap</em> sem qualquer referência, impossibilitando sua recuperação e consumindo memória indefinidamente.</li>
+        <li><strong>Ausência de checagem do retorno de <code>malloc()</code> no <code>push()</code>:</strong> A função não verifica se <code>novo == NULL</code>. Caso ocorra falta de memória livre no sistema operacional, a instrução <code>novo-&gt;dado = valor;</code> tentará desreferenciar um ponteiro nulo, provocando encerramento abrupto por falha de segmentação (<em>Segmentation Fault</em>).</li>
+        <li><strong>Ambiguidade no sentinela de erro e retorno descartado:</strong> Retornar <code>-1</code> quando a pilha está vazia é ambíguo caso <code>-1</code> seja um valor válido armazenado na pilha. Além disso, na <code>main()</code>, a chamada <code>pop()</code> tem seu retorno descartado sem exibição ou validação.</li>
+      </ol>
+    </div>
+
+    <div class="code-container">
+      <div class="code-header">
+        <span>Listagem 2.2: Código Correto</span>
+        <span>62Exemplo_Corrigido.c</span>
+      </div>
+      <pre><span class="com">#include &lt;stdio.h&gt;</span>
+<span class="com">#include &lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef struct</span> No {
+    <span class="type">int</span> dado;
+    <span class="kw">struct</span> No* proximo;
+} No;
+
+No* topo = <span class="num">NULL</span>;
+
+<span class="type">void</span> <span class="fn">push</span>(<span class="type">int</span> valor) {
+    No* novo = (No*)<span class="fn">malloc</span>(<span class="kw">sizeof</span>(No));
+    <span class="kw">if</span> (novo == <span class="num">NULL</span>) {
+        <span class="fn">printf</span>(<span class="str">"Erro: Falha na alocacao de memoria!\n"</span>);
+        <span class="kw">return</span>;
+    }
+    novo-&gt;dado = valor;
+    novo-&gt;proximo = topo;
+    topo = novo;
+}
+
+<span class="type">int</span> <span class="fn">pop</span>() {
+    <span class="kw">if</span> (topo == <span class="num">NULL</span>) {
+        <span class="fn">printf</span>(<span class="str">"Erro: Pilha vazia (Underflow)!\n"</span>);
+        <span class="kw">return</span> -<span class="num">1</span>;
+    }
+    No* temp = topo;           <span class="com">// 1. Armazena ponteiro temporario do no</span>
+    <span class="type">int</span> valor = temp-&gt;dado;    <span class="com">// 2. Extrai o dado do elemento</span>
+    topo = topo-&gt;proximo;      <span class="com">// 3. Desconecta o no e atualiza o topo</span>
+    <span class="fn">free</span>(temp);                <span class="com">// 4. Libera a memoria (previne Memory Leak)</span>
+    <span class="kw">return</span> valor;
+}
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="fn">push</span>(<span class="num">10</span>);
+    <span class="fn">push</span>(<span class="num">20</span>);
+    <span class="fn">printf</span>(<span class="str">"Desempilhado: %d\n"</span>, <span class="fn">pop</span>()); <span class="com">// 20</span>
+    <span class="fn">printf</span>(<span class="str">"Desempilhado: %d\n"</span>, <span class="fn">pop</span>()); <span class="com">// 10</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+
+    <div class="footer">
+      <span>FATEC — Ryan Dias da Silva (1051392611004) & Murilo Paes Sobrinho (1051392611041)</span>
+      <span>Página 3 de 5</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 4: PARTE 2.3 ==================== -->
+  <div class="page">
+    <div class="header">
+      <div class="header-left">
+        <h1>Estrutura de Dados (ED) — Linguagem C</h1>
+        <h2>LE03-ED: Pilhas e Filas em C</h2>
+      </div>
+      <div class="header-right">
+        <strong>Parte 2: Análise de Código e Correção de Erros</strong><br>
+        Gabarito Técnico Oficial
+      </div>
+    </div>
+
+    <div class="scenario-title">
+      <span>2.3) Cenário 3: Script com Erro sobre Fila Linear (66Fila_Bug.c)</span>
+      <span class="scenario-badge">Fila Estática Linear vs. Circular</span>
+    </div>
+
+    <div class="error-box">
+      <div class="error-box-title">Lista de Erros Técnicos (Para o Professor):</div>
+      <ol start="4">
+        <li><strong>Estouro de Limites do Vetor (<em>Array Out-of-Bounds / Buffer Overflow</em>):</strong> No <code>enqueue()</code>, o avanço estritamente linear <code>fila[++fim] = v</code> faz <code>fim</code> atingir o índice <code>3</code> após 3 inserções e 1 remoção. Mesmo existindo vaga livre no índice <code>0</code> (<code>total &lt; MAX</code>), o código tenta escrever em <code>fila[3]</code>, fora dos limites do vetor.</li>
+        <li><strong>Inutilização de posições liberadas e avanço linear contínuo de <code>inicio</code>:</strong> No <code>dequeue()</code>, o incremento <code>inicio++</code> avança indefinidamente para a direita, tornando o início do vetor inacessível e eventualmente extrapolando a capacidade física do array em remoções subsequentes.</li>
+        <li><strong>Ausência de Aritmética Modular (Buffer Circular):</strong> A estrutura não utiliza o operador de módulo (<code>% MAX</code>) para reutilizar os índices de forma circular (<code>fim = (fim + 1) % MAX</code> e <code>inicio = (inicio + 1) % MAX</code>), requisito fundamental para filas estáticas eficientes sem deslocamento de dados.</li>
+      </ol>
+    </div>
+
+    <div class="code-container">
+      <div class="code-header">
+        <span>Listagem 3.2: Código Correto</span>
+        <span>66Fila_Corrigido.c</span>
+      </div>
+      <pre><span class="com">#include &lt;stdio.h&gt;</span>
+<span class="kw">#define</span> MAX <span class="num">3</span>
+
+<span class="type">int</span> fila[MAX];
+<span class="type">int</span> inicio = <span class="num">0</span>, fim = -<span class="num">1</span>, total = <span class="num">0</span>;
+
+<span class="type">void</span> <span class="fn">enqueue</span>(<span class="type">int</span> v) {
+    <span class="kw">if</span> (total &gt;= MAX) {
+        <span class="fn">printf</span>(<span class="str">"Fila Cheia!\n"</span>);
+        <span class="kw">return</span>;
+    }
+    fim = (fim + <span class="num">1</span>) % MAX; <span class="com">// Avanco circular seguro do indice fim</span>
+    fila[fim] = v;
+    total++;
+}
+
+<span class="type">int</span> <span class="fn">dequeue</span>() {
+    <span class="kw">if</span> (total == <span class="num">0</span>) {
+        <span class="fn">printf</span>(<span class="str">"Fila Vazia!\n"</span>);
+        <span class="kw">return</span> -<span class="num">1</span>;
+    }
+    <span class="type">int</span> v = fila[inicio];
+    inicio = (inicio + <span class="num">1</span>) % MAX; <span class="com">// Avanco circular seguro do indice inicio</span>
+    total--;
+    <span class="kw">return</span> v;
+}
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="fn">enqueue</span>(<span class="num">10</span>); <span class="fn">enqueue</span>(<span class="num">20</span>); <span class="fn">enqueue</span>(<span class="num">30</span>);
+    <span class="fn">printf</span>(<span class="str">"Desenfileirado: %d\n"</span>, <span class="fn">dequeue</span>()); <span class="com">// Libera a vaga no indice 0</span>
+    <span class="fn">enqueue</span>(<span class="num">40</span>);                                <span class="com">// Insere com sucesso no indice 0 reaproveitado!</span>
+    <span class="fn">printf</span>(<span class="str">"Desenfileirado: %d\n"</span>, <span class="fn">dequeue</span>()); <span class="com">// 20</span>
+    <span class="fn">printf</span>(<span class="str">"Desenfileirado: %d\n"</span>, <span class="fn">dequeue</span>()); <span class="com">// 30</span>
+    <span class="fn">printf</span>(<span class="str">"Desenfileirado: %d\n"</span>, <span class="fn">dequeue</span>()); <span class="com">// 40</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+
+    <div class="footer">
+      <span>FATEC — Ryan Dias da Silva (1051392611004) & Murilo Paes Sobrinho (1051392611041)</span>
+      <span>Página 4 de 5</span>
+    </div>
+  </div>
+
+  <!-- ==================== PÁGINA 5: PARTE 2.4 ==================== -->
+  <div class="page">
+    <div class="header">
+      <div class="header-left">
+        <h1>Estrutura de Dados (ED) — Linguagem C</h1>
+        <h2>LE03-ED: Pilhas e Filas em C</h2>
+      </div>
+      <div class="header-right">
+        <strong>Parte 2: Análise de Código e Correção de Erros</strong><br>
+        Gabarito Técnico Oficial
+      </div>
+    </div>
+
+    <div class="scenario-title">
+      <span>2.4) Cenário 4: Script com Erro sobre Fila Encadeada Dinâmica (67Fila_Bug.c)</span>
+      <span class="scenario-badge">Fila Dinâmica Encadeada</span>
+    </div>
+
+    <div class="error-box">
+      <div class="error-box-title">Lista de Erros Técnicos (Para o Professor):</div>
+      <ol start="7">
+        <li><strong>Vazamento de Memória (<em>Memory Leak</em>):</strong> O nó removido é desconectado de <code>inicio</code>, mas a memória alocada dinamicamente nunca é liberada com <code>free()</code>. O bloco permanece inacessível e retido no <em>Heap</em> durante toda a execução.</li>
+        <li><strong>Ponteiro Pendente e Estado Inconsistente (<em>Dangling Pointer</em>):</strong> Quando a fila possui apenas 1 elemento (<code>inicio == fim</code>), o código executa apenas <code>inicio = NULL</code>, mantendo <code>fim</code> apontando para o nó desalocado/desconectado. Essa inconsistência quebra a integridade da estrutura (<code>inicio == NULL && fim != NULL</code>) e gera falhas críticas nas próximas inserções. Ambos devem ser anulados: <code>inicio = NULL; fim = NULL;</code>.</li>
+        <li><strong>Falta de retorno do dado desenfileirado:</strong> A função possui retorno <code>void</code> e descarta o valor contido no nó, violando a especificação padrão de <code>dequeue()</code>, que deve entregar o elemento removido ao código chamador.</li>
+      </ol>
+    </div>
+
+    <div class="code-container">
+      <div class="code-header">
+        <span>Listagem 4.3: Código Correto</span>
+        <span>67Fila_Corrigido.c</span>
+      </div>
+      <pre><span class="com">#include &lt;stdio.h&gt;</span>
+<span class="com">#include &lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef struct</span> No {
+    <span class="type">int</span> dado;
+    <span class="kw">struct</span> No* prox;
+} No;
+
+No* inicio = <span class="num">NULL</span>;
+No* fim = <span class="num">NULL</span>;
+
+<span class="type">void</span> <span class="fn">enqueue</span>(<span class="type">int</span> valor) {
+    No* novo = (No*)<span class="fn">malloc</span>(<span class="kw">sizeof</span>(No));
+    <span class="kw">if</span> (novo == <span class="num">NULL</span>) <span class="kw">return</span>;
+    novo-&gt;dado = valor;
+    novo-&gt;prox = <span class="num">NULL</span>;
+    <span class="kw">if</span> (fim == <span class="num">NULL</span>) {
+        inicio = fim = novo;
+    } <span class="kw">else</span> {
+        fim-&gt;prox = novo;
+        fim = novo;
+    }
+}
+
+<span class="type">int</span> <span class="fn">dequeue</span>() {
+    <span class="kw">if</span> (inicio == <span class="num">NULL</span>) {
+        <span class="fn">printf</span>(<span class="str">"Erro: Fila Vazia (Underflow)!\n"</span>);
+        <span class="kw">return</span> -<span class="num">1</span>;
+    }
+    No* temp = inicio;         <span class="com">// 1. Guarda referencia temporaria do no</span>
+    <span class="type">int</span> valor = temp-&gt;dado;    <span class="com">// 2. Salva o dado para retorno</span>
+    inicio = inicio-&gt;prox;     <span class="com">// 3. Avanca o inicio para o proximo</span>
+    
+    <span class="kw">if</span> (inicio == <span class="num">NULL</span>) {      <span class="com">// 4. Sincroniza fim se a fila esvaziou</span>
+        fim = <span class="num">NULL</span>;
+    }
+    
+    <span class="fn">free</span>(temp);                <span class="com">// 5. Libera a memoria alocada (previne Memory Leak)</span>
+    <span class="kw">return</span> valor;
+}
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="fn">enqueue</span>(<span class="num">10</span>); <span class="fn">enqueue</span>(<span class="num">20</span>);
+    <span class="fn">printf</span>(<span class="str">"Desenfileirado: %d\n"</span>, <span class="fn">dequeue</span>()); <span class="com">// 10</span>
+    <span class="fn">printf</span>(<span class="str">"Desenfileirado: %d\n"</span>, <span class="fn">dequeue</span>()); <span class="com">// 20 (inicio e fim tornam-se NULL)</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+
+    <div class="footer">
+      <span>FATEC — Ryan Dias da Silva (1051392611004) & Murilo Paes Sobrinho (1051392611041)</span>
+      <span>Página 5 de 5</span>
+    </div>
+  </div>
+
+</body>
+</html>
