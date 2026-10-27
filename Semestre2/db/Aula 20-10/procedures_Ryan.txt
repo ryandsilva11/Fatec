@@ -1,0 +1,148 @@
+create database vendaingressos;
+
+
+create table usuario(
+usu_codigo int(4) primary key,
+usu_nome varchar(30),
+usu_email varchar(30),
+usu_cpf varchar(10));
+
+
+create table categoria(
+cat_codigo int(4) primary key,
+cat_descricao varchar(30));
+
+create table integrantes(
+int_codigo int(4) primary key,
+int_nome varchar(30),
+int_funcao varchar(30));
+
+
+create table tipo_ambiente(
+tpa_codigo int(4) primary key,
+tpa_descricao varchar(30));
+
+create table setor(
+set_codigo int(4) primary key,
+set_descricao varchar(30));
+
+create table evento(
+eve_codigo int(4) primary key,
+eve_descricao varchar(30),
+eve_data datetime,
+eve_resumo varchar(200),
+eve_imagem varchar(6),
+eve_cat_codigo int(4),
+foreign key(eve_cat_codigo) references categoria(cat_codigo),
+eve_int_codigo int(4),
+foreign key(eve_int_codigo) references integrantes(int_codigo));
+
+
+create table ingresso(
+ing_codigo int(4) primary key,
+ing_eve_codigo int(4),
+foreign key(ing_eve_codigo) references evento(eve_codigo),
+ing_valor varchar(10),
+ing_tipo char(1));
+
+
+
+create table ambiente(
+amb_codigo int(4) primary key,
+amb_eve_codigo int(4),
+foreign key(amb_eve_codigo) references evento(eve_codigo),
+amb_descricao varchar(30),
+amb_set_codigo int(4),
+foreign key(amb_set_codigo) references setor(set_codigo),
+amb_local varchar(30),
+amb_referencia varchar(30),
+amb_tpa_codigo int(4),
+foreign key(amb_tpa_codigo) references tipo_ambiente(tpa_codigo));
+
+
+
+create table compra(
+com_codigo int(4) primary key,
+com_usu_codigo int(4),
+foreign key(com_usu_codigo) references usuario(usu_codigo),
+com_ing_codigo int(4),
+foreign key(com_ing_codigo) references ingresso(ing_codigo),
+com_data datetime,
+com_total varchar(10),
+com_quantidade int(4));
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_usuario_inserir(
+    IN var_codigo INT,
+    IN var_nome VARCHAR(30),
+    IN var_email VARCHAR(30),
+    IN var_cpf VARCHAR(10)
+)
+BEGIN
+    INSERT INTO usuario
+    VALUES (var_codigo, var_nome, var_email, var_cpf);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_usuario_excluir(
+    IN var_codigo INT
+)
+BEGIN
+    DELETE FROM usuario
+    WHERE usu_codigo = var_codigo;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_usuario_consultar(
+    IN var_codigo INT
+)
+BEGIN
+    IF var_codigo IS NULL THEN
+        SELECT usu_codigo, usu_nome, usu_email, usu_cpf
+        FROM usuario;
+    ELSE
+        SELECT usu_codigo, usu_nome, usu_email, usu_cpf
+        FROM usuario
+        WHERE usu_codigo = var_codigo;
+    END IF;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_categoria_inserir(
+    IN var_codigo INT,
+    IN var_descricao VARCHAR(30)
+)
+BEGIN
+    INSERT INTO categoria
+    VALUES (var_codigo, var_descricao);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_categoria_excluir(
+    IN var_codigo INT
+)
+BEGIN
+    DELETE FROM categoria
+    WHERE cat_codigo = var_codigo;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_categoria_consultar(
+    IN var_codigo INT
+)
+BEGIN
+    IF var_codigo IS NULL THEN
+        SELECT cat_codigo, cat_descricao
+        FROM categoria;
+    ELSE
+        SELECT cat_codigo, cat_descricao
+        FROM categoria
+        WHERE cat_codigo = var_codigo;
+    END IF;
+END $$
