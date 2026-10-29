@@ -15,4 +15,16 @@ public class UsuarioService {
     public List<Usuario> listAll() {
         return repository.findAll();
     }
+
+    public Usuario add(Usuario usuario) {
+        return repository.save(usuario);
+    }
+
+    public Usuario update(Long id, Usuario dadosNovos) {
+        Usuario usuarioAtual = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        usuarioAtual.setNome(dadosNovos.getNome());
+        usuarioAtual.setEmail(dadosNovos.getEmail());
+        return repository.save(usuarioAtual);
+    }
 }
