@@ -27,4 +27,8 @@ public class UsuarioService {
         usuarioAtual.setEmail(dadosNovos.getEmail());
         return repository.save(usuarioAtual);
     }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
